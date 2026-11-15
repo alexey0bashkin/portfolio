@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Алексей Башкин — Python-разработчик</title>
+  <meta name="description" content="Python-разработчик с 4+ годами опыта: автоматизация, ETL, REST API, работа с большими данными.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SVG-спрайт: все иконки здесь, используются через <use> -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-arrow-up-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 17L17 7M17 7H7M17 7V17"/>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/>
+    </symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2"/>
+      <path d="M3 7l9 6 9-6"/>
+    </symbol>
+    <symbol id="icon-telegram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 4L3 11l7 3 3 7 8-17z"/>
+      <path d="M10 14l11-10"/>
+    </symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    </symbol>
+    <symbol id="icon-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+      <path d="M15 3h6v6M10 14L21 3"/>
+    </symbol>
+  </svg>
+
+  <!-- НАВБАР -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-progress" id="navProgress"></div>
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">alexey.bashkin</span>
+        <span class="logo-dot">.</span>
+        <span class="logo-bracket">]</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" data-section="about"><span class="nav-num">01</span>О себе</a></li>
+        <li><a href="#projects" data-section="projects"><span class="nav-num">02</span>Проекты</a></li>
+        <li><a href="#experience" data-section="experience"><span class="nav-num">03</span>Опыт</a></li>
+        <li><a href="#skills" data-section="skills"><span class="nav-num">04</span>Навыки</a></li>
+        <li><a href="#contacts" data-section="contacts"><span class="nav-num">06</span>Контакты</a></li>
+        <li class="nav-pill" id="navPill" aria-hidden="true"></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#contacts" class="nav-cta">
+          <span class="cta-dot"></span>
+          Связаться
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Меню" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Мобильное меню (оверлей) -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-inner">
+      <ul class="mobile-links">
+        <li><a href="#about"><span>01</span>О себе</a></li>
+        <li><a href="#projects"><span>02</span>Проекты</a></li>
+        <li><a href="#experience"><span>03</span>Опыт</a></li>
+        <li><a href="#skills"><span>04</span>Навыки</a></li>
+        <li><a href="#education"><span>05</span>Образование</a></li>
+        <li><a href="#contacts"><span>06</span>Контакты</a></li>
+      </ul>
+      <div class="mobile-footer">
+        <a href="mailto:alexey0bashkin@yandex.ru" class="mobile-email">alexey0bashkin@yandex.ru</a>
+        <div class="mobile-socials">
+          <a href="https://t.me/Al0_B" target="_blank" rel="noopener">Telegram</a>
+          <a href="https://github.com/alexey0bashkin" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-mesh"></div>
+    <div class="hero-grid-lines"></div>
+
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="hero-badge fade-in">
+          <span class="badge-dot"></span>
+          Открыт к предложениям
+        </div>
+        <h1 class="hero-name fade-in" data-delay="100" id="heroName"></h1>
+        <p class="hero-role fade-in" data-delay="200">
+          <span class="role-prompt">$</span>
+          <span id="heroRole"></span>
+          <span class="role-cursor"></span>
+        </p>
+        <p class="hero-tagline fade-in" data-delay="300" id="heroTagline"></p>
+        <div class="hero-buttons fade-in" data-delay="400">
+          <a href="#projects" class="btn btn-primary" id="btnProjects"></a>
+          <a href="#" class="btn btn-secondary" id="btnResume" download>
+            <svg class="btn-icon"><use href="#icon-download"/></svg>
+          </a>
+        </div>
+		
+		<div class="hero-tags fade-in" data-delay="550">
+		  <span class="hero-tag"><span class="tag-dot"></span> Python</span>
+		  <span class="hero-tag"><span class="tag-dot"></span> ETL</span>
+		  <span class="hero-tag"><span class="tag-dot"></span> API</span>
+		  <span class="hero-tag"><span class="tag-dot"></span> Pandas</span>
+		</div>
+		
+        <div class="hero-meta fade-in" data-delay="500">
+          <div><span class="meta-num">4+</span><span class="meta-label">года опыта</span></div>
+          <div class="meta-sep"></div>
+          <div><span class="meta-num">97%</span><span class="meta-label">ускорение</span></div>
+          <div class="meta-sep"></div>
+          <div><span class="meta-num">2M+</span><span class="meta-label">записей/день</span></div>
+        </div>
+      </div>
+
+      <div class="hero-photo fade-in" data-delay="200">
+		  <div class="photo-carousel" id="photoCarousel">
+			<div class="carousel-track" id="carouselTrack"></div>
+			
+			<button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Предыдущее фото">
+			  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M15 18l-6-6 6-6"/>
+			  </svg>
+			</button>
+			<button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Следующее фото">
+			  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M9 18l6-6-6-6"/>
+			  </svg>
+			</button>
+
+			<div class="carousel-dots" id="carouselDots"></div>
+		  </div>
+		  <div class="photo-glow"></div>
+		</div>
+    </div>
+
+    <a href="#about" class="scroll-hint" aria-label="Вниз">
+      <span>scroll</span>
+      <span class="scroll-line"></span>
+    </a>
+  </section>
+
+  <!-- О СЕБЕ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label reveal">01 — О себе</p>
+        <h2 class="section-title reveal" id="aboutTitle"></h2>
+      </div>
+
+      <div class="about-layout">
+        <div class="about-lead reveal" id="aboutLead"></div>
+        <div class="about-facts reveal">
+          <div class="fact"><span class="fact-k">Локация</span><span class="fact-v">Москва</span></div>
+          <div class="fact"><span class="fact-k">Опыт</span><span class="fact-v">4+ года</span></div>
+          <div class="fact"><span class="fact-k">Стек</span><span class="fact-v">Python · SQL · Docker</span></div>
+          <div class="fact"><span class="fact-k">Формат</span><span class="fact-v">Удалёнка / гибрид</span></div>
+        </div>
+      </div>
+
+      <div class="stats-grid reveal" id="statsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ПРОЕКТЫ -->
+  <section class="section section-dark" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label reveal">02 — Проекты</p>
+        <h2 class="section-title reveal" id="projectsTitle"></h2>
+      </div>
+      <div class="projects-grid" id="projectsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ОПЫТ -->
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label reveal">03 — Опыт</p>
+        <h2 class="section-title reveal" id="experienceTitle"></h2>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <!-- НАВЫКИ -->
+  <section class="section section-dark" id="skills">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label reveal">04 — Навыки</p>
+        <h2 class="section-title reveal" id="skillsTitle"></h2>
+      </div>
+      <div class="skills-grid" id="skillsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ОБРАЗОВАНИЕ -->
+  <section class="section" id="education">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label reveal">05 — Образование</p>
+        <h2 class="section-title reveal" id="educationTitle"></h2>
+      </div>
+      <div class="education-grid" id="educationGrid"></div>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section class="section section-dark" id="contacts">
+    <div class="container">
+      <div class="contact-hero reveal">
+        <p class="section-label">06 — Контакты</p>
+        <h2 class="contact-big" id="contactsTitle"></h2>
+        <p class="contacts-subtitle" id="contactsSubtitle"></p>
+
+        <a href="mailto:alexey0bashkin@yandex.ru" class="contact-email">
+          alexey0bashkin@yandex.ru
+          <svg><use href="#icon-arrow-up-right"/></svg>
+        </a>
+      </div>
+
+      <div class="contacts-grid" id="contactsGrid"></div>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="logo-bracket">[</span>
+            <span class="logo-text">alexey.bashkin</span>
+            <span class="logo-dot">.</span>
+            <span class="logo-bracket">]</span>
+          </div>
+          <p class="footer-copy">© <span id="year"></span> Алексей Башкин · Python-разработчик</p>
+          <a href="#hero" class="footer-top">Наверх ↑</a>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
