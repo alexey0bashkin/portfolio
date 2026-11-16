@@ -56,6 +56,7 @@
         <li><a href="#projects" data-section="projects"><span class="nav-num">02</span>Проекты</a></li>
         <li><a href="#experience" data-section="experience"><span class="nav-num">03</span>Опыт</a></li>
         <li><a href="#skills" data-section="skills"><span class="nav-num">04</span>Навыки</a></li>
+		<li><a href="#education" data-section="education"><span class="nav-num">05</span>Образование</a></li>
         <li><a href="#contacts" data-section="contacts"><span class="nav-num">06</span>Контакты</a></li>
         <li class="nav-pill" id="navPill" aria-hidden="true"></li>
       </ul>
@@ -155,10 +156,7 @@
 		</div>
     </div>
 
-    <a href="#about" class="scroll-hint" aria-label="Вниз">
-      <span>scroll</span>
-      <span class="scroll-line"></span>
-    </a>
+
   </section>
 
   <!-- О СЕБЕ -->
@@ -257,6 +255,35 @@
       </footer>
     </div>
   </section>
+    <!-- ЛАЙТБОКС -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox-backdrop" data-close></div>
+
+    <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" aria-label="Предыдущее фото">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+
+    <button class="lightbox-arrow lightbox-next" id="lightboxNext" aria-label="Следующее фото">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+
+    <figure class="lightbox-figure">
+      <img id="lightboxImg" src="" alt="">
+      <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+    </figure>
+
+    <div class="lightbox-dots" id="lightboxDots"></div>
+  </div>
 
   <script src="data.js"></script>
   <script src="script.js"></script>

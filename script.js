@@ -4,6 +4,7 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  initLightbox(); 
   renderHero();
   renderAbout();
   renderProjects();
@@ -91,14 +92,22 @@ function initPhotoCarousel(photos) {
 
   // Свайп на мобильных
   let startX = 0, isDragging = false;
+  let _carouselSwiped = false;          // флаг: был ли свайп (чтобы не открывать лайтбокс)
+
   carousel.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX; isDragging = true; stopAuto();
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    stopAuto();
   }, { passive: true });
+
   carousel.addEventListener('touchend', (e) => {
     if (!isDragging) return;
     isDragging = false;
     const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 40) {
+      goTo(current + (dx < 0 ? 1 : -1));
+      _carouselSwiped = true;           // помечаем, что это свайп, а не клик
+    }
     startAuto();
   });
 
@@ -111,6 +120,21 @@ function initPhotoCarousel(photos) {
   carousel.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft')  { goTo(current - 1); startAuto(); }
     if (e.key === 'ArrowRight') { goTo(current + 1); startAuto(); }
+  });
+
+  // Клик по слайду — открыть лайтбокс на этом фото (навешиваем ОДИН раз)
+  track.addEventListener('click', (e) => {
+    const slide = e.target.closest('.carousel-slide');
+    if (!slide || slide.classList.contains('no-img')) return;
+
+    // Не открываем лайтбокс, если был свайп (защита от ложного клика после touchend)
+    if (_carouselSwiped) {
+      _carouselSwiped = false;
+      return;
+    }
+
+    const idx = +slide.dataset.index;
+    openLightbox(photos, idx, 'Фото профиля');
   });
 
   startAuto();
@@ -143,11 +167,12 @@ function renderProjects() {
     <article class="project-case reveal ${p.featured ? 'featured' : ''}">
       <div class="case-index">${String(i + 1).padStart(2, '0')}</div>
 
-      <div class="case-image">
-        <img src="${p.image}" alt="${p.name}" loading="lazy"
+       <div class="case-image" data-project-index="${i}" role="button" tabindex="0" aria-label="Открыть фото проекта ${p.name}">
+        <img src="${(p.images && p.images[0]) || ''}" alt="${p.name}" loading="lazy"
              onerror="this.parentElement.classList.add('no-img')">
         <div class="case-image-overlay"></div>
-        ${p.featured ? '<span class="case-featured-badge">★ Featured</span>' : ''}
+
+        ${(p.images && p.images.length > 1) ? `<span class="case-photo-count">${p.images.length} фото</span>` : ''}
       </div>
 
       <div class="case-body">
@@ -187,7 +212,32 @@ function renderProjects() {
       </div>
     </article>
   `).join('');
+    // Клик по фото проекта — открыть лайтбокс
+  grid.addEventListener('click', (e) => {
+    const imgBox = e.target.closest('.case-image');
+    if (!imgBox || imgBox.classList.contains('no-img')) return;
+    const idx = +imgBox.dataset.projectIndex;
+    const project = d.items[idx];
+    if (!project) return;
+        // Передаём весь массив, как у фото профиля
+    const photos = (project.images && project.images.length)
+      ? project.images
+      : [];
+    if (!photos.length) return;
+    openLightbox(photos, 0, project.name);
+  });
+
+  // Клавиатура: Enter/Space на картинке проекта
+  grid.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const imgBox = e.target.closest('.case-image');
+    if (!imgBox || imgBox.classList.contains('no-img')) return;
+    e.preventDefault();
+    imgBox.click();
+  });
+  
 }
+
 
 // ---------- EXPERIENCE ----------
 function renderExperience() {
@@ -196,9 +246,9 @@ function renderExperience() {
   const timeline = document.getElementById('timeline');
 
   timeline.innerHTML = d.items.map((e, i) => {
-    // Бейдж "сейчас" для текущей работы
     const isCurrent = /настоящее время|н\.в\./i.test(e.period);
-    // Инициалы компании для "логотипа"
+
+    // Инициалы для монограммы/фолбэка
     const initials = e.company
       .replace(/[^\p{L}\p{N}\s]/gu, '')
       .split(/\s+/)
@@ -206,6 +256,18 @@ function renderExperience() {
       .slice(0, 2)
       .map(w => w[0].toUpperCase())
       .join('');
+    const isDuo = initials.length >= 2;
+    const initialsClass = `company-logo${isDuo ? ' is-duo' : ''}`;
+
+    // Логотип: картинка (если есть) с фолбэком на монограмму
+    const logoHtml = e.logo
+      ? `
+        <div class="company-logo company-logo--img" aria-hidden="true">
+          <img src="${e.logo}" alt="" loading="lazy"
+               onerror="this.parentElement.classList.remove('company-logo--img'); this.parentElement.classList.add('company-logo--fallback'); this.parentElement.innerHTML='<span>${initials || '•'}</span>'">
+          <span class="company-logo-fallback">${initials || '•'}</span>
+        </div>`
+      : `<div class="${initialsClass}" aria-hidden="true"><span>${initials || '•'}</span></div>`;
 
     return `
       <div class="timeline-item reveal">
@@ -215,13 +277,14 @@ function renderExperience() {
         </div>
 
         <div class="timeline-card">
+          <div class="timeline-period">
+            ${e.period}
+            ${isCurrent ? '<span class="badge-current">сейчас</span>' : ''}
+          </div>
+
           <div class="timeline-head">
-            <div class="company-logo" aria-hidden="true">${initials || '•'}</div>
+            ${logoHtml}
             <div class="timeline-heading">
-              <div class="timeline-period">
-                ${e.period}
-                ${isCurrent ? '<span class="badge-current">сейчас</span>' : ''}
-              </div>
               <h3 class="timeline-role">${e.role}</h3>
               <p class="timeline-company">${e.company}</p>
             </div>
@@ -456,4 +519,145 @@ function initProjectSpotlight() {
       card.style.setProperty('--my', (e.clientY - r.top) + 'px');
     });
   });
+}
+
+
+// ============================================
+//  LIGHTBOX (просмотр фото на весь экран)
+// ============================================
+let _lb = null;
+
+function initLightbox() {
+  const el       = document.getElementById('lightbox');
+  const img      = document.getElementById('lightboxImg');
+  const caption  = document.getElementById('lightboxCaption');
+  const closeBtn = document.getElementById('lightboxClose');
+  const prevBtn  = document.getElementById('lightboxPrev');
+  const nextBtn  = document.getElementById('lightboxNext');
+  const dotsWrap = document.getElementById('lightboxDots');
+  const backdrop = el.querySelector('.lightbox-backdrop');
+
+  _lb = {
+    el, img, caption, closeBtn, prevBtn, nextBtn, dotsWrap, backdrop,
+    photos: [],
+    current: 0,
+    baseCaption: '',
+    lastFocus: null,
+  };
+
+  // Закрытие
+  closeBtn.addEventListener('click', closeLightbox);
+  backdrop.addEventListener('click', closeLightbox);
+
+  // Листание
+  prevBtn.addEventListener('click', () => lbGo(_lb.current - 1));
+  nextBtn.addEventListener('click', () => lbGo(_lb.current + 1));
+
+  // Клавиатура
+  document.addEventListener('keydown', (e) => {
+    if (!el.classList.contains('open')) return;
+    if (e.key === 'Escape')     { closeLightbox(); }
+    if (e.key === 'ArrowLeft')  { lbGo(_lb.current - 1); }
+    if (e.key === 'ArrowRight') { lbGo(_lb.current + 1); }
+  });
+
+  // Свайп на мобильных
+  let startX = 0, dragging = false;
+  el.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    dragging = true;
+  }, { passive: true });
+  el.addEventListener('touchend', (e) => {
+    if (!dragging) return;
+    dragging = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) lbGo(_lb.current + (dx < 0 ? 1 : -1));
+  });
+}
+
+function openLightbox(photos, index, caption) {
+  if (!_lb || !photos || !photos.length) return;
+
+  _lb.photos     = photos.slice();
+  _lb.current    = index;
+  _lb.baseCaption = caption || '';
+  _lb.lastFocus  = document.activeElement;
+
+  const el = _lb.el;
+
+  // Режимы: single / multi
+  el.classList.toggle('single', photos.length <= 1);
+  el.classList.toggle('multi',  photos.length > 1);
+
+  // Точки
+  if (photos.length > 1) {
+    _lb.dotsWrap.innerHTML = photos.map((_, i) =>
+      `<button class="lightbox-dot${i === index ? ' active' : ''}" data-index="${i}" aria-label="Фото ${i + 1}"></button>`
+    ).join('');
+    // Пересоздаём обработчики на точках
+    _lb.dotsWrap.querySelectorAll('.lightbox-dot').forEach(dot => {
+      dot.addEventListener('click', () => lbGo(+dot.dataset.index));
+    });
+  } else {
+    _lb.dotsWrap.innerHTML = '';
+  }
+
+  lbRender();
+
+  el.classList.add('open');
+  el.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('lightbox-lock');
+
+  // Фокус на кнопку закрытия
+  setTimeout(() => _lb.closeBtn.focus(), 50);
+}
+
+function lbGo(index) {
+  if (!_lb || !_lb.photos.length) return;
+  const n = _lb.photos.length;
+  _lb.current = (index + n) % n;
+  lbRender();
+}
+
+function lbRender() {
+  if (!_lb) return;
+  const { img, caption, dotsWrap, photos, current, baseCaption } = _lb;
+
+  img.src = photos[current];
+  img.alt = baseCaption || `Фото ${current + 1}`;
+
+  // Подпись: базовое имя + счётчик, если фото несколько
+  if (photos.length > 1) {
+    caption.textContent = `${baseCaption} — ${current + 1} / ${photos.length}`;
+  } else {
+    caption.textContent = baseCaption;
+  }
+
+  // Активная точка
+  if (dotsWrap) {
+    dotsWrap.querySelectorAll('.lightbox-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === current)
+    );
+  }
+}
+
+function closeLightbox() {
+  if (!_lb) return;
+  const el = _lb.el;
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('lightbox-lock');
+
+  // Возвращаем фокус
+  if (_lb.lastFocus && typeof _lb.lastFocus.focus === 'function') {
+    _lb.lastFocus.focus();
+  }
+
+  // Очистка картинки после анимации
+  setTimeout(() => {
+    if (!el.classList.contains('open')) {
+      _lb.img.src = '';
+      _lb.img.alt = '';
+    }
+  }, 350);
 }

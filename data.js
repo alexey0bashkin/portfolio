@@ -29,9 +29,10 @@ const SITE_DATA = {
       resume: "Скачать резюме"
     },
     photos: [
-      "assets/photo.jpg",
-      "assets/photo-2.jpg",
-      "assets/photo-3.jpg"
+      "assets/photo.png",
+      "assets/photo-2.png",
+	  "assets/photo-3.png",
+	  "assets/photo-4.png"
     ]
   },
 
@@ -81,7 +82,10 @@ const SITE_DATA = {
         ],
         stack: ["Python", "CSV", "openpyxl", "Regex", "GUI"],
         links: { demo: null, github: null },
-        image: "assets/project-bank.JPG",
+        images: [
+				"assets/project/c381b27e1ce11f18eb91a9eb1acb801_1.jpeg",
+				"assets/project/project-bank.JPG"
+			  ],
         featured: true
       },
       {
@@ -96,7 +100,10 @@ const SITE_DATA = {
         ],
         stack: ["Python", "Pandas", "Excel", "Git"],
         links: { demo: null, github: null },
-        image: "assets/project-metro.JPG",
+        images: [
+				"assets/project/get_preview_url.png",
+				"assets/project/project-autodiag-2.png"
+			  ],
         featured: false
       },
       {
@@ -111,7 +118,10 @@ const SITE_DATA = {
         ],
         stack: ["Python", "FastAPI", "Docker", "REST"],
         links: { demo: null, github: null },
-        image: "assets/project-api.png",
+        images: [
+				"assets/project/822aa00e1d011f1ba345279096def6d_1.jpeg",
+				"assets/project/project-autodiag-2.png"
+			  ],
         featured: false
       },
       {
@@ -128,7 +138,10 @@ const SITE_DATA = {
           demo: "https://autodiagtech.cloudpub.ru/",
           github: "https://github.com/alexey0bashkin/HybridAutoDiag"
         },
-        image: "assets/project-autodiag.png",
+        images: [
+				"assets/project/8c1d92ee1d111f18eb91a9eb1acb801_1.jpeg",
+				"assets/project/project-autodiag-2.png"
+			  ],
         featured: true
       }
     ]
@@ -142,6 +155,7 @@ const SITE_DATA = {
         period: "Ноябрь 2026 — настоящее время",
         company: "ГосТех",
         role: "Инженер по автоматизации данных · Отдел сопровождения заказа",
+        logo: "assets/logos/gostech.png",          // ← ДОБАВИТЬ
         description: "Автоматизация процессов сопровождения заказов, разработка скриптов и интеграций.",
         stack: ["Python", "SQL", "REST API"],
         achievements: [
@@ -153,6 +167,7 @@ const SITE_DATA = {
         period: "Август 2025 — Январь 2026",
         company: "Московский метрополитен",
         role: "Главный специалист · Служба сбора доходов",
+        logo: "assets/logos/metro.png",            // ← ДОБАВИТЬ
         description: "Автоматизация отчётности и обработка больших данных по пассажиропотоку и выручке.",
         stack: ["Python", "Pandas", "Excel", "Git"],
         achievements: [
@@ -165,6 +180,7 @@ const SITE_DATA = {
         period: "Сентябрь 2022 — настоящее время",
         company: "Freelance / Самозанятость",
         role: "Python-разработчик · Автоматизатор",
+        logo: "assets/logos/avito.png",                                 // ← ДОБАВИТЬ (или свой путь)
         description: "Проекты под ключ: от сбора требований до внедрения. Автоматизация, ETL, парсинг, API, BI-дашборды.",
         stack: ["Python", "FastAPI", "Pandas", "BeautifulSoup", "Selenium", "Power BI"],
         achievements: [
@@ -247,7 +263,7 @@ const SITE_DATA = {
         period: "2021 — 2025",
         type: "Бакалавриат",
         institution: "РГГУ, Москва",
-        degree: "Прикладная информатика",
+        degree: "Прикладная информатика в гуманитарной сфере",
         description: "Институт информационных наук и технологий безопасности."
       }
     ],
